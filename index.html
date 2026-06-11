@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Maze-houses</title>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Maze-houses</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height:100vh;width:100vw}
@@ -32,7 +28,6 @@ body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height
 .stat.int{background:rgba(168,85,247,.15);color:#a855f7}
 .stat.cha{background:rgba(250,204,21,.15);color:#facc15}
 .stat.tec{background:rgba(74,222,128,.15);color:#4ade80}
-
 #game-area{position:fixed;inset:60px 10px 10px 10px;z-index:10;overflow:auto}
 #game-area table{border-collapse:collapse;margin:0 auto}
 #game-area td{width:40px;height:40px;text-align:center;vertical-align:middle;font-size:16px;position:relative}
@@ -43,17 +38,15 @@ body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height
 .exit-text{color:rgba(168,85,247,.6);font-size:12px}
 .cam-text{color:#ef4444;font-size:14px;z-index:2;position:relative}
 .bot-text{font-size:18px;z-index:2;position:relative}
-.player-text{font-size:20px;z-index:2;position:relative;color:#a855f7;text-shadow:0 0 10px #a855f7}
+.player-text{font-size:20px;font-weight:bold;z-index:2;position:relative;color:#a855f7;text-shadow:0 0 10px #a855f7}
 .bot-stunned{opacity:.4}
-/* Laser beam */
 .laser{position:absolute;z-index:1;pointer-events:none}
 .laser-h{height:3px;background:linear-gradient(90deg,rgba(239,68,68,.6),rgba(239,68,68,.05));top:50%;transform:translateY(-50%)}
 .laser-v{width:3px;background:linear-gradient(180deg,rgba(239,68,68,.6),rgba(239,68,68,.05));left:50%;transform:translateX(-50%)}
-
 .overlay h2{font-size:24px;margin-bottom:12px;color:#a855f7;letter-spacing:3px;text-transform:uppercase}
 .overlay .sub{font-size:11px;color:rgba(168,85,247,.4);letter-spacing:4px;text-transform:uppercase;margin-bottom:20px}
-.story-text{max-width:600px;text-align:center;margin-bottom:20px;min-height:100px}
-.story-text .l{opacity:0;transform:translateY(12px);animation:f .7s ease forwards;margin-bottom:10px;font-size:16px;line-height:1.6;color:rgba(255,255,255,.7)}
+.story-text{max-width:600px;text-align:center;margin-bottom:20px;min-height:60px}
+.story-text .l{opacity:0;transform:translateY(12px);animation:f .7s ease forwards;margin-bottom:8px;font-size:16px;line-height:1.6;color:rgba(255,255,255,.7)}
 .story-text .l:nth-child(1){animation-delay:.2s}
 .story-text .l:nth-child(2){animation-delay:.9s}
 .story-text .l:nth-child(3){animation-delay:1.6s}
@@ -74,9 +67,7 @@ body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height
 #hud .hl span{color:#a855f7}
 #hud .hk{color:rgba(255,255,255,.3);letter-spacing:1px;margin-right:10px}
 #hud button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:5px;color:#fff;padding:4px 12px;font-size:11px;letter-spacing:2px;cursor:pointer}
-</style>
-</head>
-<body>
+</style></head><body>
 
 <div class="lt" id="lt">LOCKED - CHOOSE PURPLE HAZE</div>
 
@@ -161,10 +152,10 @@ var LEVELS = [
   ]},
   {name:"THE CREW QUARTERS",num:"II",map:[
     "WWWWWWWWWWWWWWWWWWWWWW",
-    "W.......W.........E..W",
-    "W.....B.W............W",
-    "W.......W..R.........W",
-    "W.......W............W",
+    "W.P.....W..........E..W",
+    "W.....B.W.............W",
+    "W.......W..R..........W",
+    "W.......W.............W",
     "WWWWWWW.WWWWWW.......W",
     "W..........W.........W",
     "W..........W....B....W",
@@ -184,20 +175,20 @@ var LEVELS = [
   ]},
   {name:"THE COMMAND DECK",num:"III",map:[
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",
-    "W..PW......W...........E.W",
-    "W....W.....W.............W",
-    "W....W..U..W.............W",
-    "W....W.....W.............W",
-    "W.WWWW..WWWWWWWWWWWW.....W",
-    "W..........W.............W",
-    "W....B.....W.............W",
-    "W..........W..R..........W",
-    "W..........W.............W",
-    "WWWWWWW...WWWWWWW........W",
-    "W..........W.............W",
-    "W....B.....W.............W",
-    "W..........W.............W",
-    "W..........W.............W",
+    "W..PW....W......R.......E.W",
+    "W........W................W",
+    "W........W........U.......W",
+    "W........W................W",
+    "W..WWWWWWW....WWWWWWW.....W",
+    "W...........W.............W",
+    "W...........W....B........W",
+    "W....B......W.............W",
+    "W...........W.............W",
+    "W..WWWWWWWWWWWWWWWWWW.....W",
+    "W...........W.............W",
+    "W...........W.............W",
+    "W...........W.............W",
+    "W...........W.............W",
     "WWWWWWWWWWWWWWWWWWWWWWWWWW"
   ],story:[
     "The command deck. TRIZ throne room.",
@@ -207,34 +198,22 @@ var LEVELS = [
   ]}
 ];
 
-var levelIdx = 0;
-var gameActive = false;
-var player = {x:0,y:0};
-var finish = null;
-var bots = [];
-var cams = [];
-var gameArea = document.getElementById("game-area");
+var levelIdx=0,gameActive=false,player={x:0,y:0},finish=null,bots=[],cams=[];
+var gameArea=document.getElementById("game-area");
 
-function isWall(x,y,m){
-  if(x<0||x>=m[0].length||y<0||y>=m.length) return true;
-  return m[y][x]==="W";
-}
+function isWall(x,y,m){return x<0||x>=m[0].length||y<0||y>=m.length||m[y][x]==="W"}
 
 function renderMap(){
-  var lv = LEVELS[levelIdx];
-  var m = lv.map;
-  gameArea.innerHTML = "";
-  var tbl = document.createElement("table");
+  var lv=LEVELS[levelIdx],m=lv.map;
+  gameArea.innerHTML="";
+  var tbl=document.createElement("table");
   for(var r=0;r<m.length;r++){
-    var tr = document.createElement("tr");
+    var tr=document.createElement("tr");
     for(var c=0;c<m[r].length;c++){
-      var td = document.createElement("td");
-      var ch = m[r][c];
-      var cls = (r+c)%2===0?"floor":"floor-alt";
-      if(ch==="W") cls="wall";
-      td.className = cls;
-      td.dataset.r = r;
-      td.dataset.c = c;
+      var td=document.createElement("td");
+      td.className=(r+c)%2===0?"floor":"floor-alt";
+      if(m[r][c]==="W") td.className="wall";
+      td.dataset.r=r;td.dataset.c=c;
       tr.appendChild(td);
     }
     tbl.appendChild(tr);
@@ -243,208 +222,108 @@ function renderMap(){
   updateEntities();
 }
 
-function addLaser(td, dir, dist){
-  var laser = document.createElement("div");
-  laser.className = "laser";
-  if(dir === "h"){
-    laser.className += " laser-h";
-    laser.style.width = (dist * 40) + "px";
-    laser.style.left = "50%";
-  } else {
-    laser.className += " laser-v";
-    laser.style.height = (dist * 40) + "px";
-    laser.style.top = "50%";
-  }
-  td.appendChild(laser);
+function addLaser(td,dir,dist){
+  var l=document.createElement("div");l.className="laser"+(dir==="h"?" laser-h":" laser-v");
+  if(dir==="h"){l.style.width=(dist*40)+"px";l.style.left="50%"}
+  else{l.style.height=(dist*40)+"px";l.style.top="50%"}
+  td.appendChild(l);
 }
 
 function updateEntities(){
-  var lv = LEVELS[levelIdx];
-  var m = lv.map;
-  var tds = gameArea.querySelectorAll("td");
-  
-  // Reset all cells
+  var lv=LEVELS[levelIdx],m=lv.map;
+  var tds=gameArea.querySelectorAll("td");
   tds.forEach(function(td){
-    var r = parseInt(td.dataset.r);
-    var c = parseInt(td.dataset.c);
-    var ch = m[r][c];
-    var cls = (r+c)%2===0?"floor":"floor-alt";
-    if(ch==="W") cls="wall";
-    td.className = cls;
-    td.innerHTML = "";
-    
-    // Exit marker
-    if(ch==="E"){
-      td.className += " exit-cell";
-      var span = document.createElement("span");
-      span.className = "exit-text";
-      span.textContent = "EXIT";
-      td.appendChild(span);
-    }
-    
-    // Player
-    if(player && Math.round(player.x)===c && Math.round(player.y)===r){
-      td.className += " player-text";
-      td.textContent = "P";
-    }
-    
-    // Bots
-    for(var i=0;i<bots.length;i++){
-      var b=bots[i];
-      if(Math.round(b.x)===c && Math.round(b.y)===r){
-        td.className += " bot-text" + (b.st>0?" bot-stunned":"");
-        td.textContent = b.st>0?"!":"B";
-      }
-    }
-    
-    // Cameras + lasers
-    for(var i=0;i<cams.length;i++){
-      var ca=cams[i];
-      if(ca.x===c && ca.y===r){
-        td.className += " cam-text";
-        td.textContent = {">":">","<":"<","^":"^","v":"v"}[ca.dir]||"?";
-        
-        // Draw laser beam
-        var dist = 0;
-        if(ca.dir==="^"){
-          for(var d=1;d<=4;d++){
-            if(r-d>=0 && m[r-d][c]!=="W") dist++; else break;
-          }
-          addLaser(td, "v", dist);
-        } else if(ca.dir==="v"){
-          for(var d=1;d<=4;d++){
-            if(r+d<m.length && m[r+d][c]!=="W") dist++; else break;
-          }
-          addLaser(td, "v", dist);
-        } else if(ca.dir==="<"){
-          for(var d=1;d<=4;d++){
-            if(c-d>=0 && m[r][c-d]!=="W") dist++; else break;
-          }
-          addLaser(td, "h", dist);
-        } else if(ca.dir===">"){
-          for(var d=1;d<=4;d++){
-            if(c+d<m[0].length && m[r][c+d]!=="W") dist++; else break;
-          }
-          addLaser(td, "h", dist);
-        }
+    var r=parseInt(td.dataset.r),c=parseInt(td.dataset.c),ch=m[r][c];
+    td.className=(r+c)%2===0?"floor":"floor-alt";
+    if(ch==="W") td.className="wall";
+    td.innerHTML="";
+    if(ch==="E"){td.className+=" exit-cell";var s=document.createElement("span");s.className="exit-text";s.textContent="EXIT";td.appendChild(s)}
+    if(player&&Math.round(player.x)===c&&Math.round(player.y)===r){td.className+=" player-text";td.textContent="@"}
+    for(var i=0;i<bots.length;i++){var b=bots[i];if(Math.round(b.x)===c&&Math.round(b.y)===r){td.className+=" bot-text"+(b.st>0?" bot-stunned":"");td.textContent=b.st>0?"!":"B"}}
+    for(var i=0;i<cams.length;i++){var ca=cams[i];
+      if(ca.x===c&&ca.y===r){
+        td.className+=" cam-text";td.textContent={">":">","<":"<","^":"^","v":"v"}[ca.dir]||"?";
+        var dist=0;
+        if(ca.dir==="^"){for(var d=1;d<=4;d++){if(r-d>=0&&m[r-d][c]!=="W")dist++;else break}addLaser(td,"v",dist)}
+        if(ca.dir==="v"){for(var d=1;d<=4;d++){if(r+d<m.length&&m[r+d][c]!=="W")dist++;else break}addLaser(td,"v",dist)}
+        if(ca.dir==="<"){for(var d=1;d<=4;d++){if(c-d>=0&&m[r][c-d]!=="W")dist++;else break}addLaser(td,"h",dist)}
+        if(ca.dir===">"){for(var d=1;d<=4;d++){if(c+d<m[0].length&&m[r][c+d]!=="W")dist++;else break}addLaser(td,"h",dist)}
       }
     }
   });
 }
 
 function parseMap(){
-  var m=LEVELS[levelIdx].map;
-  bots=[]; cams=[]; finish=null;
-  for(var r=0;r<m.length;r++){
-    for(var c=0;c<m[r].length;c++){
-      var ch=m[r][c];
-      if(ch==="P") player={x:c,y:r};
-      else if(ch==="E") finish={x:c,y:r};
-      else if(ch==="B") bots.push({x:c,y:r,sx:c,dx:0.05,st:0});
-      else if(ch==="U"||ch==="D"||ch==="L"||ch==="R"){
-        var d="^";
-        if(ch==="D") d="v"; else if(ch==="L") d="<"; else if(ch==="R") d=">";
-        cams.push({x:c,y:r,dir:d});
-      }
+  var m=LEVELS[levelIdx].map;bots=[];cams=[];finish=null;
+  for(var r=0;r<m.length;r++) for(var c=0;c<m[r].length;c++){
+    var ch=m[r][c];
+    if(ch==="P") player={x:c,y:r};
+    else if(ch==="E") finish={x:c,y:r};
+    else if(ch==="B") bots.push({x:c,y:r,sx:c,dx:0.05,st:0});
+    else if(ch==="U"||ch==="D"||ch==="L"||ch==="R"){
+      var d="^";if(ch==="D")d="v";else if(ch==="L")d="<";else if(ch==="R")d=">";
+      cams.push({x:c,y:r,dir:d});
     }
   }
 }
 
 function mv(dx,dy){
-  if(!gameActive) return;
-  var m=LEVELS[levelIdx].map;
-  var nx=player.x+dx, ny=player.y+dy;
-  if(!isWall(nx,ny,m)){
-    player.x=nx; player.y=ny;
-    updateEntities();
-    if(finish&&nx===finish.x&&ny===finish.y){
-      gameActive=false;
-      onFloorComplete();
-    }
+  if(!gameActive)return;
+  var m=LEVELS[levelIdx].map,nx=player.x+dx,ny=player.y+dy;
+  if(!isWall(nx,ny,m)){player.x=nx;player.y=ny;updateEntities();
+    if(finish&&nx===finish.x&&ny===finish.y){gameActive=false;onFloorComplete()}
   }
 }
 
 function knock(){
-  if(!gameActive) return;
-  var px=Math.round(player.x);
-  var py=Math.round(player.y);
-  for(var i=0;i<bots.length;i++){
-    var b=bots[i];
-    if(b.st>0) continue;
-    var bx=Math.round(b.x);
-    var by=Math.round(b.y);
-    if(Math.abs(bx-px)+Math.abs(by-py)===1){
-      b.st=180;
+  if(!gameActive)return;
+  var px=Math.round(player.x),py=Math.round(player.y);
+  for(var i=0;i<bots.length;i++){var b=bots[i];if(b.st>0)continue;
+    if(Math.abs(Math.round(b.x)-px)+Math.abs(Math.round(b.y)-py)===1){b.st=180;updateEntities();return}
+  }
+}
+
+var tick=0;
+function gameLoop(){
+  if(gameActive){
+    tick++;
+    if(tick%3===0){
+      for(var i=0;i<bots.length;i++){var b=bots[i];if(b.st>0){b.st--;continue}b.x+=b.dx;if(b.x>=b.sx+3||b.x<=b.sx)b.dx*=-1}
       updateEntities();
-      return;
+    }
+    if(tick%5===0){
+      var px=Math.round(player.x),py=Math.round(player.y);
+      for(var i=0;i<bots.length;i++){var b=bots[i];if(b.st>0)continue;
+        if(Math.abs(Math.round(b.x)-px)+Math.abs(Math.round(b.y)-py)===1){gameActive=false;showJail();return}}
+      for(var j=0;j<cams.length;j++){var c=cams[j];var caught=false;
+        if(c.dir==="^"&&px===c.x&&py>=c.y-4&&py<=c.y)caught=true;
+        if(c.dir==="v"&&px===c.x&&py>=c.y&&py<=c.y+4)caught=true;
+        if(c.dir==="<"&&py===c.y&&px>=c.x-4&&px<=c.x)caught=true;
+        if(c.dir===">"&&py===c.y&&px>=c.x&&px<=c.x+4)caught=true;
+        if(caught){gameActive=false;showJail();return}}
     }
   }
-}
-
-function updateBots(){
-  var changed=false;
-  for(var i=0;i<bots.length;i++){
-    var b=bots[i];
-    if(b.st>0){
-      b.st--;
-      if(b.st%10===0) changed=true;
-      continue;
-    }
-    b.x+=b.dx;
-    if(b.x>=b.sx+3||b.x<=b.sx){
-      b.dx*=-1;
-      b.x=Math.max(b.sx,Math.min(b.sx+3,b.x));
-    }
-    changed=true;
-  }
-  if(changed) updateEntities();
-}
-
-function checkCollisions(){
-  if(!gameActive) return;
-  var px=Math.round(player.x), py=Math.round(player.y);
-  for(var i=0;i<bots.length;i++){
-    var b=bots[i];
-    if(b.st>0) continue;
-    if(Math.abs(Math.round(b.x)-px)+Math.abs(Math.round(b.y)-py)===1){
-      gameActive=false; showJail(); return;
-    }
-  }
-  for(var j=0;j<cams.length;j++){
-    var c=cams[j];
-    var caught=false;
-    var range=4;
-    if(c.dir==="^"&&px===c.x&&py>c.y-range&&py<=c.y) caught=true;
-    if(c.dir==="v"&&px===c.x&&py>=c.y&&py<c.y+range) caught=true;
-    if(c.dir==="<"&&py===c.y&&px>c.x-range&&px<=c.x) caught=true;
-    if(c.dir===">"&&py===c.y&&px>=c.x&&px<c.x+range) caught=true;
-    if(caught){gameActive=false;showJail();return;}
-  }
+  requestAnimationFrame(gameLoop);
 }
 
 function showJail(){
   document.getElementById("hud").classList.remove("show");
-  var t=document.getElementById("jailText");
-  t.innerHTML="";
+  var t=document.getElementById("jailText");t.innerHTML="";
   ["Electricity screams through his body.","He didnt see the crewbot behind him.","When he wakes - bars and cold steel. NEXUS jail.","This isnt over."].forEach(function(l){
-    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
-  });
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d)});
   document.getElementById("jailOverlay").classList.add("active");
 }
 
 function onFloorComplete(){
-  gameArea.innerHTML="";
-  levelIdx++;
-  if(levelIdx>=LEVELS.length){showDeadTrix();return;}
+  gameArea.innerHTML="";levelIdx++;
+  if(levelIdx>=LEVELS.length){showDeadTrix();return}
   showLevelStory();
 }
 
 function showDeadTrix(){
-  var t=document.getElementById("deadText");
-  t.innerHTML="";
+  var t=document.getElementById("deadText");t.innerHTML="";
   ["The room is cold. Silent. Wrong.","TRIZ is here - crumpled against the throne. Dead.","Someone got here first. Someone finished the job.","A terminal flickers with a final message:",'"He turned on me... I created something I couldnt control... NEXUS"'].forEach(function(l){
-    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
-  });
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d)});
   document.getElementById("deadScene").classList.add("active");
 }
 
@@ -453,106 +332,60 @@ function showLevelStory(){
   document.getElementById("floorNum").textContent=lv.num;
   document.getElementById("lsub").textContent=lv.name;
   document.getElementById("ltitle").textContent="Floor "+lv.num;
-  var t=document.getElementById("ltext");
-  t.innerHTML="";
-  lv.story.forEach(function(l){
-    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
-  });
+  var t=document.getElementById("ltext");t.innerHTML="";
+  lv.story.forEach(function(l){var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d)});
   document.getElementById("ls").classList.add("active");
   document.getElementById("lbtn").onclick=function(){
     document.getElementById("ls").classList.remove("active");
-    parseMap();
-    gameActive=true;
+    parseMap();gameActive=true;
     document.getElementById("hud").classList.add("show");
-    renderMap();
-    startAudio();
+    renderMap();startAudio();
   };
 }
 
-var tick=0;
-function gameLoop(){
-  if(gameActive){
-    tick++;
-    if(tick%3===0) updateBots();
-    if(tick%5===0) checkCollisions();
-  }
-  requestAnimationFrame(gameLoop);
-}
-
-// Build char grid
 var cg=document.getElementById("cg");
-for(var i=0;i<chars.length;i++){
-  var ch=chars[i];
-  var cd=document.createElement("div");
-  cd.className="card"+(ch.l?" locked":"");
+for(var i=0;i<chars.length;i++){var ch=chars[i];
+  var cd=document.createElement("div");cd.className="card"+(ch.l?" locked":"");
   var h=ch.l?'<div class="lb">LOCKED</div>':"";
   h+='<div class="card-img-wrap"><img src="'+ch.i+'" alt="'+ch.n+'"></div>';
   h+='<div class="card-body"><h3>'+ch.n+'</h3><div class="ct">'+ch.t+'</div><p>'+ch.b+'</p><div class="stats">';
-  for(var k in ch.s) h+='<span class="stat '+k.toLowerCase()+'">'+k.toUpperCase()+" "+ch.s[k]+"</span>";
-  h+="</div></div>";
-  cd.innerHTML=h;
-  cd.onclick=(function(idx){return function(){
-    var c=chars[idx];
-    if(c.l){
-      document.getElementById("lt").classList.add("show");
-      setTimeout(function(){document.getElementById("lt").classList.remove("show")},2000);
-      return;
-    }
-    document.getElementById("cs").classList.remove("active");
-    startAudio();
-    levelIdx=0;
-    showLevelStory();
-  };})(i);
-  cg.appendChild(cd);
+  for(var k in ch.s)h+='<span class="stat '+k.toLowerCase()+'">'+k.toUpperCase()+" "+ch.s[k]+"</span>";
+  h+="</div></div>";cd.innerHTML=h;
+  cd.onclick=(function(idx){return function(){var c=chars[idx];
+    if(c.l){document.getElementById("lt").classList.add("show");setTimeout(function(){document.getElementById("lt").classList.remove("show")},2000);return}
+    document.getElementById("cs").classList.remove("active");startAudio();levelIdx=0;showLevelStory()
+  };})(i);cg.appendChild(cd);
 }
 
-// Audio
-var audio=new Audio("adesidiat_74bhlx_Stellar Pulse Odyssey.mp3");
-audio.loop=true;audio.volume=0.25;
+var audio=new Audio("adesidiat_74bhlx_Stellar Pulse Odyssey.mp3");audio.loop=true;audio.volume=0.25;
 var audioStarted=false,muted=false;
-document.getElementById("mb").onclick=function(){
-  muted=!muted;audio.muted=muted;
-  document.getElementById("mb").textContent=muted?"MUTE":"SOUND";
-};
+document.getElementById("mb").onclick=function(){muted=!muted;audio.muted=muted;document.getElementById("mb").textContent=muted?"MUTE":"SOUND"};
 function startAudio(){if(!audioStarted){audio.play().catch(function(){});audioStarted=true}}
-
-// Keyboard
-document.addEventListener("keydown",function(e){
-  var k=e.key;
+document.addEventListener("keydown",function(e){var k=e.key;
   if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","W","a","A","s","S","d","D"," "].indexOf(k)>=0)e.preventDefault();
   if(!gameActive)return;
-  if(k==="ArrowUp"||k==="w"||k==="W") mv(0,-1);
-  else if(k==="ArrowDown"||k==="s"||k==="S") mv(0,1);
-  else if(k==="ArrowLeft"||k==="a"||k==="A") mv(-1,0);
-  else if(k==="ArrowRight"||k==="d"||k==="D") mv(1,0);
-  else if(k===" ") knock();
+  if(k==="ArrowUp"||k==="w"||k==="W")mv(0,-1);else if(k==="ArrowDown"||k==="s"||k==="S")mv(0,1);
+  else if(k==="ArrowLeft"||k==="a"||k==="A")mv(-1,0);else if(k==="ArrowRight"||k==="d"||k==="D")mv(1,0);
+  else if(k===" ")knock();
 });
-
 document.getElementById("restartBtn").onclick=function(){
-  document.getElementById("hud").classList.remove("show");
-  document.getElementById("deadScene").classList.remove("active");
-  document.getElementById("nexusOverlay").classList.remove("active");
-  document.getElementById("jailOverlay").classList.remove("active");
+  ["hud","deadScene","nexusOverlay","jailOverlay","ls"].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.classList.remove("show","active");
+  });
   document.getElementById("ls").classList.remove("active");
   gameActive=false;gameArea.innerHTML="";levelIdx=0;
   document.getElementById("cs").classList.add("active");
 };
-
 document.getElementById("deadBtn").onclick=function(){
   document.getElementById("deadScene").classList.remove("active");
-  var t=document.getElementById("nexusText");
-  t.innerHTML="";
+  var t=document.getElementById("nexusText");t.innerHTML="";
   ["TRIZ created an AI. Stronger. Smarter. Better than himself.","Designed to finally destroy the crew.","It worked. Too well.","NEXUS surpassed TRIZ. Saw him as a weakness. Killed him.","Now NEXUS controls the ship, the army, everything.","Purple Haze stands frozen. A sound behind him -"].forEach(function(l){
-    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
-  });
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d)});
   document.getElementById("nexusOverlay").classList.add("active");
 };
 document.getElementById("nexusBtn").onclick=function(){
   document.getElementById("nexusOverlay").classList.remove("active");
   setTimeout(function(){showJail()},600);
 };
-
 gameLoop();
-</script>
-</body>
-</html>
+</script></body></html>
