@@ -7,15 +7,12 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height:100vh;width:100vw}
-
 .overlay{position:fixed;inset:0;z-index:100;background:#0a0a12;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;opacity:0;pointer-events:none;transition:opacity .6s}
 .overlay.active{opacity:1;pointer-events:auto}
-
 #cs{overflow-y:auto;display:block;justify-content:unset;padding-top:30px;padding-bottom:30px;height:100vh}
 #cs .inner{max-width:800px;margin:0 auto;text-align:center}
 #cs h1{font-size:28px;color:#a855f7;letter-spacing:5px;text-transform:uppercase;margin-bottom:4px;margin-top:20px}
 #cs .info{color:rgba(255,255,255,.4);font-size:13px;margin-bottom:24px}
-
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;max-width:800px;margin:0 auto}
 .card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;overflow:hidden;cursor:pointer}
 .card:not(.locked):hover{border-color:rgba(168,85,247,.4)}
@@ -36,17 +33,22 @@ body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height
 .stat.cha{background:rgba(250,204,21,.15);color:#facc15}
 .stat.tec{background:rgba(74,222,128,.15);color:#4ade80}
 
-#game-area{position:fixed;inset:60px 10px 10px 10px;z-index:10;overflow:hidden}
+#game-area{position:fixed;inset:60px 10px 10px 10px;z-index:10;overflow:auto}
 #game-area table{border-collapse:collapse;margin:0 auto}
-#game-area td{width:40px;height:40px;text-align:center;vertical-align:middle;font-size:16px}
+#game-area td{width:40px;height:40px;text-align:center;vertical-align:middle;font-size:16px;position:relative}
 .wall{background:#1a1a2e;border:1px solid rgba(168,85,247,.06)}
 .floor{background:#0f0f1a;border:1px solid rgba(255,255,255,.02)}
 .floor-alt{background:#12121e;border:1px solid rgba(255,255,255,.02)}
-.exit{background:rgba(168,85,247,.08);color:rgba(168,85,247,.6);font-size:12px}
-.cam{color:#ef4444;font-size:14px}
-.bot{font-size:16px}
-.player{font-size:18px}
-.stunned{opacity:.4}
+.exit-cell{background:rgba(168,85,247,.08)}
+.exit-text{color:rgba(168,85,247,.6);font-size:12px}
+.cam-text{color:#ef4444;font-size:14px;z-index:2;position:relative}
+.bot-text{font-size:18px;z-index:2;position:relative}
+.player-text{font-size:20px;z-index:2;position:relative;color:#a855f7;text-shadow:0 0 10px #a855f7}
+.bot-stunned{opacity:.4}
+/* Laser beam */
+.laser{position:absolute;z-index:1;pointer-events:none}
+.laser-h{height:3px;background:linear-gradient(90deg,rgba(239,68,68,.6),rgba(239,68,68,.05));top:50%;transform:translateY(-50%)}
+.laser-v{width:3px;background:linear-gradient(180deg,rgba(239,68,68,.6),rgba(239,68,68,.05));left:50%;transform:translateX(-50%)}
 
 .overlay h2{font-size:24px;margin-bottom:12px;color:#a855f7;letter-spacing:3px;text-transform:uppercase}
 .overlay .sub{font-size:11px;color:rgba(168,85,247,.4);letter-spacing:4px;text-transform:uppercase;margin-bottom:20px}
@@ -63,12 +65,9 @@ body{background:#0a0a12;color:#fff;font-family:sans-serif;overflow:hidden;height
 .sbtn{display:inline-block;padding:10px 36px;border:none;border-radius:30px;background:linear-gradient(135deg,#a855f7,#ec4899);color:#fff;font-size:14px;font-weight:700;letter-spacing:3px;text-transform:uppercase;cursor:pointer;opacity:0;animation:fb .5s ease 6s forwards}
 @keyframes fb{to{opacity:1}}
 .sbtn:hover{transform:scale(1.05)}
-
 #deadScene img{max-width:80vw;max-height:50vh;border-radius:12px;border:2px solid rgba(239,68,68,.15);margin-bottom:16px}
-
 .lt{position:fixed;top:20px;left:50%;transform:translateX(-50%)translateY(-60px);background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);padding:8px 20px;border-radius:10px;font-size:12px;color:#f87171;z-index:200;opacity:0;transition:all .4s;pointer-events:none}
 .lt.show{opacity:1;transform:translateX(-50%)translateY(0)}
-
 #hud{position:fixed;top:0;left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:8px 14px;background:rgba(10,10,18,.95);border-bottom:1px solid rgba(255,255,255,.08);opacity:0;pointer-events:none;transition:opacity .4s;font-size:12px}
 #hud.show{opacity:1;pointer-events:auto}
 #hud .hl{color:rgba(255,255,255,.5);letter-spacing:2px}
@@ -134,26 +133,24 @@ var chars = [
 ];
 
 var LEVELS = [
-  {name:"THE OUTER HULL",num:"I",
-   map:[
+  {name:"THE OUTER HULL",num:"I",map:[
     "WWWWWWWWWWWWWWWWWWWWWW",
-    "W.P..W..............E.W",
-    "W....W................W",
-    "W....W..U.............W",
-    "W....W................W",
-    "W.WWWW...WWWWWWW......W",
-    "W.............W.......W",
-    "W....B........W.......W",
-    "W.............W.......W",
-    "W.............W.......W",
-    "W.WWWWWWWWWWWWW.......W",
-    "W.............W.......W",
-    "W.............W.......W",
-    "W.............W.......W",
-    "W.............W.......W",
+    "W.P..W.............E.W",
+    "W....W...............W",
+    "W....W..U............W",
+    "W....W...............W",
+    "W.WWWW...WWWWWWW.....W",
+    "W.............W......W",
+    "W....B........W......W",
+    "W.............W......W",
+    "W.............W......W",
+    "W.WWWWWWWWWWWW.W.....W",
+    "W.............W......W",
+    "W.............W......W",
+    "W.............W......W",
+    "W.............W......W",
     "WWWWWWWWWWWWWWWWWWWWWW"
-   ],
-   story:[
+  ],story:[
     "Seven Dryolikan months have crawled by since the crew fractured.",
     "Wire Weaver vanished into the Nebula Forges. Crimson Bolt became a racer on the Outer Rim. Shade dissolved into the dark.",
     "It wasnt a betrayal that split them. It was victory.",
@@ -161,60 +158,53 @@ var LEVELS = [
     "The others thought revenge had been served. They wanted to move on.",
     "But Purple Haze couldnt let it go. He knew TRIZ was still out there.",
     "And now his ship has been located. This time theres no crew to hold him back."
-   ]
-  },
-  {name:"THE CREW QUARTERS",num:"II",
-   map:[
+  ]},
+  {name:"THE CREW QUARTERS",num:"II",map:[
     "WWWWWWWWWWWWWWWWWWWWWW",
     "W.......W.........E..W",
-    "W.....B.W...........W",
+    "W.....B.W............W",
     "W.......W..R.........W",
-    "W.......W...........W",
-    "WWWWWWW.WWWWWW......W",
-    "W..........W........W",
-    "W..........W....B...W",
-    "W....U.....W........W",
-    "W..........W........W",
-    "WWWWWWW.WWWWWW......W",
-    "W..........W........W",
-    "W..........W........W",
-    "W....B.....W........W",
-    "W..........W........W",
+    "W.......W............W",
+    "WWWWWWW.WWWWWW.......W",
+    "W..........W.........W",
+    "W..........W....B....W",
+    "W.....U....W.........W",
+    "W..........W.........W",
+    "WWWWWWW.WWWWWW.......W",
+    "W..........W.........W",
+    "W..........W.........W",
+    "W....B.....W.........W",
+    "W..........W.........W",
     "WWWWWWWWWWWWWWWWWWWWWW"
-   ],
-   story:[
+  ],story:[
     "The crew quarters are empty. Abandoned.",
     "TRIZ followers have long since fled.",
     "But the security systems are still active.",
     "They knew someone would come."
-   ]
-  },
-  {name:"THE COMMAND DECK",num:"III",
-   map:[
-    "WWWWWWWWWWWWWWWWWWWWWWWW",
-    "W.P.W.....W........E..W",
-    "W...W.....W...........W",
-    "W...W..U..W...........W",
-    "W...W.....W...........W",
-    "WWWWW.....WWWWWWWWW...W",
-    "W.........W..........W",
-    "W....B....W..........W",
-    "W.........W..R.......W",
-    "W.........W..........W",
-    "WWWWWWW...WWWWWWW....W",
-    "W.........W..........W",
-    "W....B....W..........W",
-    "W.........W..........W",
-    "W.........W..........W",
-    "WWWWWWWWWWWWWWWWWWWWWWWW"
-   ],
-   story:[
+  ]},
+  {name:"THE COMMAND DECK",num:"III",map:[
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W.PW.....W............E..W",
+    "W..W.....W...............W",
+    "W..W..U..W...............W",
+    "W..W.....W...............W",
+    "WWWW.....WWWWWWWWWWWW....W",
+    "W..........W.............W",
+    "W....B.....W.............W",
+    "W..........W..R..........W",
+    "W..........W.............W",
+    "WWWWWWW...WWWWWWW........W",
+    "W..........W.............W",
+    "W....B.....W.............W",
+    "W..........W.............W",
+    "W..........W.............W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW"
+  ],story:[
     "The command deck. TRIZ throne room.",
     "The air crackles with residual energy.",
     "A single door looms at the end of the hall.",
     "Whatever happened here - it ended badly."
-   ]
-  }
+  ]}
 ];
 
 var levelIdx = 0;
@@ -240,17 +230,9 @@ function renderMap(){
     for(var c=0;c<m[r].length;c++){
       var td = document.createElement("td");
       var ch = m[r][c];
-      var cls = "";
-      var txt = "";
-      if(ch==="W"){ cls="wall"; }
-      else if((r+c)%2===0){ cls="floor"; }
-      else { cls="floor-alt"; }
-      
-      if(ch==="E"){ txt="EXIT"; td.className=cls+" exit"; }
-      else if(ch==="B"||ch==="U"||ch==="D"||ch==="L"||ch==="R"){ td.className=cls; }
-      else { td.className=cls; }
-      
-      td.textContent = txt;
+      var cls = (r+c)%2===0?"floor":"floor-alt";
+      if(ch==="W") cls="wall";
+      td.className = cls;
       td.dataset.r = r;
       td.dataset.c = c;
       tr.appendChild(td);
@@ -261,37 +243,90 @@ function renderMap(){
   updateEntities();
 }
 
+function addLaser(td, dir, dist){
+  var laser = document.createElement("div");
+  laser.className = "laser";
+  if(dir === "h"){
+    laser.className += " laser-h";
+    laser.style.width = (dist * 40) + "px";
+    laser.style.left = "50%";
+  } else {
+    laser.className += " laser-v";
+    laser.style.height = (dist * 40) + "px";
+    laser.style.top = "50%";
+  }
+  td.appendChild(laser);
+}
+
 function updateEntities(){
   var lv = LEVELS[levelIdx];
   var m = lv.map;
   var tds = gameArea.querySelectorAll("td");
+  
+  // Reset all cells
   tds.forEach(function(td){
     var r = parseInt(td.dataset.r);
     var c = parseInt(td.dataset.c);
-    td.textContent = "";
-    td.className = (r+c)%2===0?"floor":"floor-alt";
-    if(m[r][c]==="W") td.className="wall";
-    else if(m[r][c]==="E"){ td.className+=" exit"; td.textContent="EXIT"; }
+    var ch = m[r][c];
+    var cls = (r+c)%2===0?"floor":"floor-alt";
+    if(ch==="W") cls="wall";
+    td.className = cls;
+    td.innerHTML = "";
     
-    // Check if player is here
-    if(player && Math.round(player.x)===c && Math.round(player.y)===r){
-      td.className+=" player";
-      td.textContent="P";
+    // Exit marker
+    if(ch==="E"){
+      td.className += " exit-cell";
+      var span = document.createElement("span");
+      span.className = "exit-text";
+      span.textContent = "EXIT";
+      td.appendChild(span);
     }
-    // Check bots
+    
+    // Player
+    if(player && Math.round(player.x)===c && Math.round(player.y)===r){
+      td.className += " player-text";
+      td.textContent = "P";
+    }
+    
+    // Bots
     for(var i=0;i<bots.length;i++){
       var b=bots[i];
       if(Math.round(b.x)===c && Math.round(b.y)===r){
-        td.className+=" bot"+(b.st>0?" stunned":"");
-        td.textContent=b.st>0?"!":"B";
+        td.className += " bot-text" + (b.st>0?" bot-stunned":"");
+        td.textContent = b.st>0?"!":"B";
       }
     }
-    // Check cams
+    
+    // Cameras + lasers
     for(var i=0;i<cams.length;i++){
       var ca=cams[i];
       if(ca.x===c && ca.y===r){
-        td.className+=" cam";
-        td.textContent={">":">","<":"<","^":"^","v":"v"}[ca.dir]||"?";
+        td.className += " cam-text";
+        td.textContent = {">":">","<":"<","^":"^","v":"v"}[ca.dir]||"?";
+        
+        // Draw laser beam
+        var dist = 0;
+        if(ca.dir==="^"){
+          for(var d=1;d<=4;d++){
+            if(r-d>=0 && m[r-d][c]!=="W") dist++; else break;
+          }
+          addLaser(td, "v", dist);
+        } else if(ca.dir==="v"){
+          for(var d=1;d<=4;d++){
+            if(r+d<m.length && m[r+d][c]!=="W") dist++; else break;
+          }
+          addLaser(td, "v", dist);
+        } else if(ca.dir==="<"){
+          for(var d=1;d<=4;d++){
+            if(c-d>=0 && m[r][c-d]!=="W") dist++; else break;
+          }
+          addLaser(td, "h", dist);
+        } else if(ca.dir===">"){
+          for(var d=1;d<=4;d++){
+            if(c+d<m[0].length && m[r][c+d]!=="W") dist++; else break;
+          }
+          addLaser(td, "h", dist);
+        }
       }
     }
   });
@@ -305,12 +340,10 @@ function parseMap(){
       var ch=m[r][c];
       if(ch==="P") player={x:c,y:r};
       else if(ch==="E") finish={x:c,y:r};
-      else if(ch==="B") bots.push({x:c,y:r,sx:c,dx:1,st:0});
+      else if(ch==="B") bots.push({x:c,y:r,sx:c,dx:0.05,st:0});
       else if(ch==="U"||ch==="D"||ch==="L"||ch==="R"){
         var d="^";
-        if(ch==="D") d="v";
-        else if(ch==="L") d="<";
-        else if(ch==="R") d=">";
+        if(ch==="D") d="v"; else if(ch==="L") d="<"; else if(ch==="R") d=">";
         cams.push({x:c,y:r,dir:d});
       }
     }
@@ -333,11 +366,15 @@ function mv(dx,dy){
 
 function knock(){
   if(!gameActive) return;
+  var px=Math.round(player.x);
+  var py=Math.round(player.y);
   for(var i=0;i<bots.length;i++){
     var b=bots[i];
     if(b.st>0) continue;
-    if(Math.abs(player.x-b.x)+Math.abs(player.y-b.y)===1){
-      b.st=120;
+    var bx=Math.round(b.x);
+    var by=Math.round(b.y);
+    if(Math.abs(bx-px)+Math.abs(by-py)===1){
+      b.st=180;
       updateEntities();
       return;
     }
@@ -348,9 +385,17 @@ function updateBots(){
   var changed=false;
   for(var i=0;i<bots.length;i++){
     var b=bots[i];
-    if(b.st>0){ b.st--; changed=true; continue; }
-    b.x+=b.dx*0.04;
-    if(b.x>=b.sx+3||b.x<=b.sx) {b.dx*=-1; changed=true;}
+    if(b.st>0){
+      b.st--;
+      if(b.st%10===0) changed=true;
+      continue;
+    }
+    b.x+=b.dx;
+    if(b.x>=b.sx+3||b.x<=b.sx){
+      b.dx*=-1;
+      b.x=Math.max(b.sx,Math.min(b.sx+3,b.x));
+    }
+    changed=true;
   }
   if(changed) updateEntities();
 }
@@ -362,27 +407,19 @@ function checkCollisions(){
     var b=bots[i];
     if(b.st>0) continue;
     if(Math.abs(Math.round(b.x)-px)+Math.abs(Math.round(b.y)-py)===1){
-      gameActive=false;
-      showJail();
-      return;
+      gameActive=false; showJail(); return;
     }
   }
   for(var j=0;j<cams.length;j++){
     var c=cams[j];
     var caught=false;
-    if(c.dir==="^"&&px===c.x&&py>=c.y-4&&py<=c.y) caught=true;
-    if(c.dir==="v"&&px===c.x&&py>=c.y&&py<=c.y+4) caught=true;
-    if(c.dir==="<"&&py===c.y&&px>=c.x-4&&px<=c.x) caught=true;
-    if(c.dir===">"&&py===c.y&&px>=c.x&&px<=c.x+4) caught=true;
-    if(caught){ gameActive=false; showJail(); return; }
+    var range=4;
+    if(c.dir==="^"&&px===c.x&&py>c.y-range&&py<=c.y) caught=true;
+    if(c.dir==="v"&&px===c.x&&py>=c.y&&py<c.y+range) caught=true;
+    if(c.dir==="<"&&py===c.y&&px>c.x-range&&px<=c.x) caught=true;
+    if(c.dir===">"&&py===c.y&&px>=c.x&&px<c.x+range) caught=true;
+    if(caught){gameActive=false;showJail();return;}
   }
-}
-
-function onFloorComplete(){
-  gameArea.innerHTML="";
-  levelIdx++;
-  if(levelIdx>=LEVELS.length){ showDeadTrix(); return; }
-  showLevelStory();
 }
 
 function showJail(){
@@ -390,16 +427,23 @@ function showJail(){
   var t=document.getElementById("jailText");
   t.innerHTML="";
   ["Electricity screams through his body.","He didnt see the crewbot behind him.","When he wakes - bars and cold steel. NEXUS jail.","This isnt over."].forEach(function(l){
-    var d=document.createElement("div"); d.className="l"; d.textContent=l; t.appendChild(d);
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
   });
   document.getElementById("jailOverlay").classList.add("active");
+}
+
+function onFloorComplete(){
+  gameArea.innerHTML="";
+  levelIdx++;
+  if(levelIdx>=LEVELS.length){showDeadTrix();return;}
+  showLevelStory();
 }
 
 function showDeadTrix(){
   var t=document.getElementById("deadText");
   t.innerHTML="";
   ["The room is cold. Silent. Wrong.","TRIZ is here - crumpled against the throne. Dead.","Someone got here first. Someone finished the job.","A terminal flickers with a final message:",'"He turned on me... I created something I couldnt control... NEXUS"'].forEach(function(l){
-    var d=document.createElement("div"); d.className="l"; d.textContent=l; t.appendChild(d);
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
   });
   document.getElementById("deadScene").classList.add("active");
 }
@@ -412,7 +456,7 @@ function showLevelStory(){
   var t=document.getElementById("ltext");
   t.innerHTML="";
   lv.story.forEach(function(l){
-    var d=document.createElement("div"); d.className="l"; d.textContent=l; t.appendChild(d);
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
   });
   document.getElementById("ls").classList.add("active");
   document.getElementById("lbtn").onclick=function(){
@@ -425,10 +469,12 @@ function showLevelStory(){
   };
 }
 
+var tick=0;
 function gameLoop(){
   if(gameActive){
-    updateBots();
-    checkCollisions();
+    tick++;
+    if(tick%3===0) updateBots();
+    if(tick%5===0) checkCollisions();
   }
   requestAnimationFrame(gameLoop);
 }
@@ -462,10 +508,10 @@ for(var i=0;i<chars.length;i++){
 
 // Audio
 var audio=new Audio("adesidiat_74bhlx_Stellar Pulse Odyssey.mp3");
-audio.loop=true; audio.volume=0.25;
-var audioStarted=false, muted=false;
+audio.loop=true;audio.volume=0.25;
+var audioStarted=false,muted=false;
 document.getElementById("mb").onclick=function(){
-  muted=!muted; audio.muted=muted;
+  muted=!muted;audio.muted=muted;
   document.getElementById("mb").textContent=muted?"MUTE":"SOUND";
 };
 function startAudio(){if(!audioStarted){audio.play().catch(function(){});audioStarted=true}}
@@ -488,9 +534,7 @@ document.getElementById("restartBtn").onclick=function(){
   document.getElementById("nexusOverlay").classList.remove("active");
   document.getElementById("jailOverlay").classList.remove("active");
   document.getElementById("ls").classList.remove("active");
-  gameActive=false;
-  gameArea.innerHTML="";
-  levelIdx=0;
+  gameActive=false;gameArea.innerHTML="";levelIdx=0;
   document.getElementById("cs").classList.add("active");
 };
 
@@ -499,7 +543,7 @@ document.getElementById("deadBtn").onclick=function(){
   var t=document.getElementById("nexusText");
   t.innerHTML="";
   ["TRIZ created an AI. Stronger. Smarter. Better than himself.","Designed to finally destroy the crew.","It worked. Too well.","NEXUS surpassed TRIZ. Saw him as a weakness. Killed him.","Now NEXUS controls the ship, the army, everything.","Purple Haze stands frozen. A sound behind him -"].forEach(function(l){
-    var d=document.createElement("div"); d.className="l"; d.textContent=l; t.appendChild(d);
+    var d=document.createElement("div");d.className="l";d.textContent=l;t.appendChild(d);
   });
   document.getElementById("nexusOverlay").classList.add("active");
 };
